@@ -1,0 +1,16 @@
+{:paths
+ ["src"]
+ :deps
+ {org.clojure/clojure              {:mvn/version "1.10.1"}
+  com.datomic/datomic-pro          {:mvn/version "0.9.6014"}
+  org.postgresql/postgresql        {:mvn/version "9.3-1102-jdbc41"}
+  http-kit                         {:mvn/version "2.4.0"}
+  metosin/reitit                   {:mvn/version "0.5.5"}}
+ :aliases
+ {:server {:main-opts ["-m" "grok.core"]}
+  :dev {:extra-paths ["config/dev" "env/dev"]}
+  :test {:extra-paths ["test" "config/test"]
+         :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-529"}
+                       lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}
+         :main-opts   ["-m" "kaocha.runner"]}
+  :socket-repl {:jvm-opts ["-Dclojure.server.repl={:port,50505,:accept,clojure.core.server/repl}"]}}}
