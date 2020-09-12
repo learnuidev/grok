@@ -1,19 +1,17 @@
 (ns grok.db.core
   (:require [datomic.api :as d]
+            [config.core :refer [env]]
             [grok.db.schema :refer [schema]]))
 
-;; TODO
-;; - 1. create a db-uri
-(def database-uri "datomic:sql://grok-development?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic")
-
 (defn create-conn [db-uri]
-  (d/create-database db-uri)
-  (let [conn (d/connect db-uri)]
-    conn))
+  (when db-uri
+    (d/create-database db-uri)
+    (let [conn (d/connect db-uri)]
+      conn)))
 
-;; - 2. create a connection
-(def conn (create-conn database-uri))
+;; Conn
+(def conn (create-conn (:database-uri env)))
 
-;; - 3. create schema and transact into the database
+;; Schema transaction
 (comment
   (def tx @(d/transact conn schema)))

@@ -1,0 +1,2 @@
+{:database-uri "datomic:sql://grok-development?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic"
+ :port 8080}
