@@ -28,7 +28,7 @@
    string?
    #(s/gen #{"abcdeff" "asdasdasd231da" "asdas3wa2ed"})))
 
-(s/def :user/id string?)
+(s/def :user/id uuid?)
 
 ;; generating random data
 
@@ -36,6 +36,8 @@
 (s/def ::user
   (s/keys :req [:user/email :user/password]
           :opt [:user/id :user/token :user/username]))
+
+(gen/generate (s/gen ::user))
 
 (defn create! [conn user-params]
   (if (s/valid? ::user user-params)
