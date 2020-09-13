@@ -43,7 +43,6 @@
                     {:grok/error-id :validation
                      :error "Invalid email or password provided"}))))
 
-;; Fetch a user by ID
 (defn fetch
   ([db user-id]
    (fetch db user-id '[*]))
@@ -63,3 +62,9 @@
     (throw (ex-info "Unable to update user"
                     {:grok/error-id :server-error
                      :error "Unable to edit user"}))))
+
+(defn delete!
+  [conn user-id]
+  (when-let [user (fetch (d/db conn) user-id)]
+    (d/transact conn [[:db/retractEntity [:user/id user-id]]])
+    user))

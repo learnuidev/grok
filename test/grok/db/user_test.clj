@@ -22,4 +22,9 @@
     (let [uid (SUT/create! *conn* (gen/generate (s/gen ::SUT/user)))
           user (SUT/edit! *conn* uid {:user/username "jane.doe"})]
       (is (= true (s/valid? ::SUT/user user)))
-      (is (= "jane.doe" (:user/username user))))))
+      (is (= "jane.doe" (:user/username user)))))
+  (testing "delete!"
+    (let [uid (SUT/create! *conn* (gen/generate (s/gen ::SUT/user)))
+          user (SUT/delete! *conn* uid)]
+      (is (= true (s/valid? ::SUT/user user)))
+      (is (= nil (SUT/fetch (d/db *conn*) uid))))))
