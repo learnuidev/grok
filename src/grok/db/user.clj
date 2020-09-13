@@ -53,3 +53,13 @@
           :where
           [?uid :user/id ?user-id]]
         db user-id pattern)))
+
+(defn edit!
+  [conn user-id user-params]
+  (if (fetch (d/db conn) user-id)
+    (let [tx-data (merge user-params {:user/id user-id})
+          db-after (:db-after @(d/transact conn [tx-data]))]
+      (fetch db-after user-id))
+    (throw (ex-info "Unable to update user"
+                    {:grok/error-id :server-error
+                     :error "Unable to edit user"}))))
