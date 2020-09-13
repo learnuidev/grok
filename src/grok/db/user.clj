@@ -1,27 +1,37 @@
 (ns grok.db.user
   (:require [datomic.api :as d]
-            [clojure.string :as str]
-            [clojure.spec.alpha :as s]))
-
-;; id
-;; email
-;; username
-;; password
-;; token
+            [clojure.spec.alpha :as s]
+            [clojure.test.check.generators :as gen]))
 
 (defn validate-email [email]
   (let [email-regex #"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"]
     (re-matches email-regex email)))
 
-(validate-email "joe@gmail.com")
+;; with-gen and s/gen
 
-(s/def :user/email (s/and string? validate-email))
-(s/def :user/password (s/and string? #(> (count %) 6)))
-(s/def :user/username string?)
-(s/def :user/token string?)
+(s/def :user/email
+  (s/with-gen
+   (s/and string? validate-email)
+   #(s/gen #{"john@gmail.com" "jane@me.com"})))
+(s/def :user/password
+  (s/with-gen
+   (s/and string? #(> (count %) 6))
+   #(s/gen #{"abcdeff" "asdasdasd231da" "asdas3wa2ed"})))
+
+(s/def :user/username
+  (s/with-gen
+   string?
+   #(s/gen #{"john.doe" "mark.dijk" "mo.salah"})))
+
+(s/def :user/token
+  (s/with-gen
+   string?
+   #(s/gen #{"abcdeff" "asdasdasd231da" "asdas3wa2ed"})))
+
 (s/def :user/id string?)
 
-(count "sadasd")
+;; generating random data
+
 
 (s/def ::user
   (s/keys :req [:user/email :user/password]
