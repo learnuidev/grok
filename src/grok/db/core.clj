@@ -1,6 +1,7 @@
 (ns grok.db.core
   (:require [datomic.api :as d]
-            [config.core :refer [env]]
+            [grok.config :refer [env]]
+            [mount.core :as mount :refer [defstate]]
             [grok.db.schema :refer [schema]]))
 
 (defn create-conn [db-uri]
@@ -9,8 +10,10 @@
     (let [conn (d/connect db-uri)]
       conn)))
 
-;; Conn
-(def conn (create-conn (:database-uri env)))
+;; Lets change our conn to mount state
+(defstate conn
+          :start (create-conn (:database-uri env))
+          :stop  (.release conn))
 
 ;; Schema transaction
 (comment
