@@ -128,3 +128,5 @@ Another benefit mount provide is that it enables reloaded workflow... lets much 
 ## Step 3: Start using mount
 
 ## Step 4: Use mount start function to start life cycle of the application
+
+We will install one more resource to start namespaces of our application

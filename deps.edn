@@ -10,7 +10,8 @@
   mount                            {:mvn/version "0.1.16"}}
  :aliases
  {:server {:main-opts ["-m" "grok.core"]}
-  :dev {:extra-paths ["config/dev" "env/dev"]}
+  :dev {:extra-paths ["config/dev" "env/dev"]
+        :extra-deps {org.clojure/tools.namespace      {:mvn/version "1.0.0"}}}
   :test {:extra-paths ["test" "config/test"]
          :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-529"}
                        lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}
