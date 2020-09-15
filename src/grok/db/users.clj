@@ -1,4 +1,4 @@
-(ns grok.db.user
+(ns grok.db.users
   (:require [datomic.api :as d]
             [grok.db.core :refer [conn]]
             [clojure.spec.alpha :as s]

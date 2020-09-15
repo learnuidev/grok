@@ -1,9 +1,9 @@
-(ns grok.db.user-test
+(ns grok.db.users-test
   (:require [clojure.test :refer [is deftest testing use-fixtures]]
             [datomic.api :as d]
             [clojure.spec.alpha :as s]
             [clojure.test.check.generators :as gen]
-            [grok.db.user :as SUT]
+            [grok.db.users :as SUT]
             [grok.db.with-db :refer [with-db *conn*]]))
 
 (use-fixtures :each with-db)
