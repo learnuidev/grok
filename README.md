@@ -84,8 +84,8 @@ Now that we are aware of our data model, lets look at how we will design/structu
 - Delete (done)
 
 ## Decks
-- List
-- Read
+- List   (done)
+- Read   (done)
 - Create
 - Update
 - Delete

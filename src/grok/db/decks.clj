@@ -3,7 +3,8 @@
             [grok.db.core :refer [conn]]))
 
 (defn browse
-  "Browse a list of decks, blonging to a certain user"
+  "Browse a list of decks, blonging to a certain user, returns
+   empty vector if user has not created any deck"
   [db user-id]
   (d/q '[:find [(pull ?deck [*]) ...]
          :in $ ?uid
@@ -11,10 +12,19 @@
          [?user :user/id ?uid]
          [?deck :deck/author ?user]]
        db user-id))
+
 ; - Read
+;; passing . after find caluse returns a single item
 (defn fetch
-  "Fetch a single deck by ID"
-  [db user-id deck-id])
+  "Fetch a single deck by ID, returns nil if not found"
+  [db user-id deck-id]
+  (d/q '[:find (pull ?deck [*]) .
+         :in $ ?uid ?did
+         :where
+         [?user :user/id ?uid]
+         [?deck :deck/id ?did]
+         [?deck :deck/author ?author]]
+       db user-id deck-id))
 
 ; - Create
 (defn create!

@@ -27,4 +27,24 @@
       @(d/transact *conn* [new-deck])
       (let [decks (SUT/browse (d/db *conn*) uid)]
         (is (= true (vector? decks)))
-        (is (= false (empty? decks)))))))
+        (is (= false (empty? decks))))))
+
+  (testing "fetch - returns a single deck by deck ID, belonging to a user"
+    (let [user-params (gen/generate (s/gen ::u/user))
+          user-id (u/create! *conn* user-params)
+          deck-id (d/squuid)
+          new-deck {:deck/id deck-id
+                    :deck/title "Learning Clojure"
+                    :deck/tags #{"Clojure" "programming"}
+                    :deck/author [:user/id user-id]}]
+      @(d/transact *conn* [new-deck])
+      (let [deck (SUT/fetch (d/db *conn*) user-id deck-id)]
+        (is (= true (map? deck)))
+        (is (= false (empty? deck))))))
+  (testing "fetch - returns nil if not found"
+    (let [user-params (gen/generate (s/gen ::u/user))
+          user-id (u/create! *conn* user-params)
+          deck-id (d/squuid)
+          deck (SUT/fetch (d/db *conn*) user-id deck-id)]
+      (is (= false (map? deck)))
+      (is (= true (nil? deck))))))
