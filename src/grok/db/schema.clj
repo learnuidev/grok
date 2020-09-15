@@ -22,4 +22,21 @@
    {:db/ident :user/token
     :db/valueType :db.type/string
     :db/cardinality :db.cardinality/one
-    :db/doc "Token of the User"}])
+    :db/doc "Token of the User"}
+   {:db/ident :deck/id
+    :db/valueType :db.type/uuid
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/identity
+    :db/doc "ID of the deck"}
+   {:db/ident :deck/author
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/one
+    :db/doc "Author of the deck"}
+   {:db/ident :deck/title
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/doc "Title of the deck"}
+   {:db/ident :deck/tags
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/many
+    :db/doc "Tags of the deck"}])
