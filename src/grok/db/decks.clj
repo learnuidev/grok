@@ -42,8 +42,16 @@
 ; - Create
 (defn create!
   "Create a new deck"
-  [conn user-id deck-params])
-
+  [conn user-id deck-params]
+  (if (s/valid? ::deck deck-params)
+    (let [deck-id (d/squuid)
+          tx-data (merge deck-params {:deck/author [:user/id user-id]
+                                      :deck/id deck-id})]
+      (d/transact conn [tx-data])
+      deck-id)
+    (throw (ex-info "Deck is invalid"
+                    {:grok/error-id :validation
+                     :error "Invalid deck input values"}))))
 ; - Update
 (defn edit!
   "Edit an existing deck"

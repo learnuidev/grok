@@ -36,4 +36,9 @@
       (let [deck-id (d/squuid)
             deck (SUT/fetch (d/db *conn*) user-id deck-id)]
         (is (= false (map? deck)))
-        (is (= true (nil? deck)))))))
+        (is (= true (nil? deck)))))
+
+    (testing "create! - create a new deck"
+      (let [new-deck (gen/generate (s/gen ::SUT/deck))
+            deck-id (SUT/create! *conn* user-id new-deck)]
+        (is (uuid? deck-id))))))
