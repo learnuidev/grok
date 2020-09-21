@@ -28,6 +28,7 @@
 
 ; - Read
 ;; passing . after find caluse returns a single item
+;; small typo
 (defn fetch
   "Fetch a single deck by ID, returns nil if not found"
   [db user-id deck-id]
@@ -36,7 +37,7 @@
          :where
          [?user :user/id ?uid]
          [?deck :deck/id ?did]
-         [?deck :deck/author ?author]]
+         [?deck :deck/author ?user]]
        db user-id deck-id))
 
 ; - Create
