@@ -8,7 +8,7 @@
 ;; Deck Spec
 (s/def :deck/id uuid?)
 (s/def :deck/title (s/and string? #(seq %)))
-(s/def :deck/tags  (s/coll-of string? :kind set? :min-count 1))
+(s/def :deck/tags  (s/coll-of string? :kind vector? :min-count 1))
 
 (s/def ::deck
   (s/keys
@@ -68,4 +68,7 @@
 ; - Delete
 (defn delete!
   "Delete a deck"
-  [conn user-id deck-id])
+  [conn user-id deck-id]
+  (when-let [deck (fetch (d/db conn) user-id deck-id)]
+    (d/transact conn [[:db/retractEntity [:deck/id deck-id]]])
+    deck))
