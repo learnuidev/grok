@@ -56,7 +56,14 @@
 ; - Update
 (defn edit!
   "Edit an existing deck"
-  [conn user-id deck-id deck-params])
+  [conn user-id deck-id deck-params]
+  (if (fetch (d/db conn) user-id deck-id)
+    (let [tx-data (merge deck-params {:deck/id deck-id})
+          db-after (:db-after @(d/transact conn [tx-data]))]
+      (fetch db-after user-id deck-id))
+    (throw (ex-info "Unable to update deck"
+                    {:grok/error-id :server-error
+                     :error "Unable to update deck"}))))
 
 ; - Delete
 (defn delete!
