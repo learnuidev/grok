@@ -39,4 +39,29 @@
    {:db/ident :deck/tags
     :db/valueType :db.type/string
     :db/cardinality :db.cardinality/many
-    :db/doc "Tags of the deck"}])
+    :db/doc "Tags of the deck"}
+   {:db/ident :card/id
+    :db/valueType :db.type/uuid
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/identity
+    :db/doc "ID of the card"}
+   {:db/ident :card/deck
+    :db/valueType :db.type/ref
+    :db/cardinality :db.cardinality/one
+    :db/doc "Deck ID of the card"}
+   {:db/ident :card/front
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/doc "Front Content of the card"}
+   {:db/ident :card/back
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one
+    :db/doc "Back Content of the card"}
+   {:db/ident :card/progress
+    :db/valueType :db.type/long
+    :db/cardinality :db.cardinality/one
+    :db/doc "Progress Point of the card"}
+   {:db/ident :card/next-study-date
+    :db/valueType :db.type/instant
+    :db/cardinality :db.cardinality/one
+    :db/doc "Next study date of the card"}])
