@@ -30,6 +30,19 @@
               card (first cards)]
           (is (seq cards))
           (is (s/valid? ::SUT/card card))
-          (is (vector? cards)))))))
-;; Test fails since we are returning vector of card ids
-;; lets change that by using pull inside the query to fetch card as maps
+          (is (vector? cards)))))
+
+    (testing "fetch - returns a card by ID"
+      (let [new-deck (merge (gen/generate (s/gen ::decks/deck)))
+            deck-id (decks/create! *conn* user-id new-deck)
+            card-id (d/squuid)
+            new-card {:card/id card-id
+                      :card/deck [:deck/id deck-id]
+                      :card/front "What is Cloujure"
+                      :card/back "A programming language"}]
+        @(d/transact *conn* [new-card])
+        (let [card (SUT/fetch (d/db *conn*) deck-id card-id)]
+          (is (s/valid? ::SUT/card card)))))
+    (testing "fetch - returns a nil if not found"
+      (let [card (SUT/fetch (d/db *conn*) 1 2)]
+        (is (nil? card))))))

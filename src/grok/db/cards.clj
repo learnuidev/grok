@@ -30,6 +30,16 @@
        db deck-id))
 
 ; - Read - fetch a single card by id
+(defn fetch
+  "Fetch a single card by ID, return nil if not found"
+  [db deck-id card-id]
+  (d/q '[:find (pull ?card [*]) .
+         :in $ ?deck-id ?card-id
+         :where
+         [?deck :deck/id ?deck-id]
+         [?card :card/id ?card-id]
+         [?card :card/deck ?deck]]
+       db deck-id card-id))
 ; - Create - create a new card
 ; - Update - update a card
 ; - Delete - delete a card
