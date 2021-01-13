@@ -55,4 +55,25 @@
                     {:grok/error-id :validation
                      :error "Invalid card input values"}))))
 ; - Update - update a card
+;; Edit function takes three params
+;; - conn - datomic connection
+;; - deck-id - id of the deck
+;; - card-id - id of the card
+;; - card-parans - updated card values
+;; Lets write the failing test first
+;; Implementation
+;; - check if card with card-id and deck-id exists (use fetch function)
+;; - transact updated params (transact function)
+;; - return the updated-card (q function)
+;; - Lets see if the tests pass
+;; - looks like edit functionality works for now
+(defn edit!
+  "Editing an existing card"
+  [conn deck-id card-id card-params]
+  (when (fetch (d/db conn) deck-id card-id)
+    (let [tx-data (-> card-params
+                      (assoc :card/id card-id))
+          db-after (:db-after @(d/transact conn [tx-data]))]
+      (fetch db-after deck-id card-id))))
+
 ; - Delete - delete a card

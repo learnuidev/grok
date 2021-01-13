@@ -53,4 +53,14 @@
                       :card/front "What is Cloujure"
                       :card/back "A programming language"}
             card-id (SUT/create! *conn* deck-id new-card)]
-        (is (uuid? card-id))))))
+        (is (uuid? card-id))))
+    (testing "edit! - Edit an existing card and returns the updated card"
+      (let [new-deck (merge (gen/generate (s/gen ::decks/deck)))
+            deck-id (decks/create! *conn* user-id new-deck)
+            new-card {:card/deck [:deck/id deck-id]
+                      :card/front "What is Cloujure"
+                      :card/back "A programming language"}
+            card-id (SUT/create! *conn* deck-id new-card)
+            card-params {:card/back "A functional programming language"}
+            edited-card (SUT/edit! *conn* deck-id card-id card-params)]
+        (is (s/valid? ::SUT/card edited-card))))))
