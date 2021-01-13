@@ -41,5 +41,18 @@
          [?card :card/deck ?deck]]
        db deck-id card-id))
 ; - Create - create a new card
+(defn create!
+  "Create a new card"
+  [conn deck-id card-params]
+  (if (s/valid? ::card card-params)
+    (let [card-id (d/squuid)
+          tx-data (-> card-params
+                      (assoc :card/deck [:deck/id deck-id])
+                      (assoc :card/id card-id))]
+      (d/transact conn [tx-data])
+      card-id)
+    (throw (ex-info "Card is invalid"
+                    {:grok/error-id :validation
+                     :error "Invalid card input values"}))))
 ; - Update - update a card
 ; - Delete - delete a card

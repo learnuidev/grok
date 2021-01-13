@@ -45,4 +45,12 @@
           (is (s/valid? ::SUT/card card)))))
     (testing "fetch - returns a nil if not found"
       (let [card (SUT/fetch (d/db *conn*) 1 2)]
-        (is (nil? card))))))
+        (is (nil? card))))
+    (testing "create! - Creates a new card and returns the card ID"
+      (let [new-deck (merge (gen/generate (s/gen ::decks/deck)))
+            deck-id (decks/create! *conn* user-id new-deck)
+            new-card {:card/deck [:deck/id deck-id]
+                      :card/front "What is Cloujure"
+                      :card/back "A programming language"}
+            card-id (SUT/create! *conn* deck-id new-card)]
+        (is (uuid? card-id))))))
