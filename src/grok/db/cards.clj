@@ -29,7 +29,7 @@
          [?cards :card/deck ?deck]]
        db deck-id))
 
-; - Read - fetch a single card by id
+; - Read - fetch a single card by id - DONE
 (defn fetch
   "Fetch a single card by ID, return nil if not found"
   [db deck-id card-id]
@@ -40,7 +40,7 @@
          [?card :card/id ?card-id]
          [?card :card/deck ?deck]]
        db deck-id card-id))
-; - Create - create a new card
+; - Create - create a new card - DONE
 (defn create!
   "Create a new card"
   [conn deck-id card-params]
@@ -54,7 +54,7 @@
     (throw (ex-info "Card is invalid"
                     {:grok/error-id :validation
                      :error "Invalid card input values"}))))
-; - Update - update a card
+; - Update - update a card - DONE
 ;; Edit function takes three params
 ;; - conn - datomic connection
 ;; - deck-id - id of the deck
@@ -76,4 +76,19 @@
           db-after (:db-after @(d/transact conn [tx-data]))]
       (fetch db-after deck-id card-id))))
 
-; - Delete - delete a card
+; - Delete - delete a card - DONE
+;; We will copy /paste the implementation from deck for deleting entity
+;; We will refactor later in the series
+(defn delete! [conn deck-id card-id]
+  (when-let [card (fetch (d/db conn) deck-id card-id)]         ;; - 1
+    (d/transact conn [[:db/retractEntity [:card/id card-id]]]) ;; - 2
+    card)) ;; - 3
+
+;; 1 - we try to see if we have the card, only if the card exists
+;; 2 - we use the retractEntity function from datomic to retract the card entity
+;; 3 - lastly we return the deleted card itself
+
+;; lets see if the tests pass
+;; Looks like all the tests pass
+;; Finally we have implemented all the crud operations for user deck and card
+;; Lets revisit the documentation

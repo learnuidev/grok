@@ -75,7 +75,7 @@ Now that we are aware of our data model, lets look at how we will design/structu
 
 ---
 
-# Step: 1 Data Layer
+# Step: 1 Data Layer - DONE
 
 ## User
 - Create (done)
@@ -130,3 +130,11 @@ Another benefit mount provide is that it enables reloaded workflow... lets much 
 ## Step 4: Use mount start function to start life cycle of the application
 
 We will install one more resource to start namespaces of our application
+---
+# Step - 2 Data Transport Layer - HTTP
+
+In next video we will start with the server series. Thank you so much for watching and for all the feedbacks.
+First step was an experimental with music and coding (Data Layer)
+Second step I will go over the code line by line.
+
+Thanks for watching :D
